@@ -35,8 +35,7 @@ jobs:
           push: true
           no-cache: true
           tags: ${{ env.CONTAINER_REGISTRY }}/${{ env.AZURE_WEBAPP_NAME }}:development
-          secrets: |
-            GIT_PERSONAL_ACCESS_TOKEN=${{ secrets.GIT_PERSONAL_ACCESS_TOKEN }}
+          secrets: Dockerfile
 
       - uses: azure/webapps-deploy@v2
         with:
