@@ -35,7 +35,7 @@ jobs:
           push: true
           no-cache: true
           tags: ${{ env.CONTAINER_REGISTRY }}/${{ env.AZURE_WEBAPP_NAME }}:development
-          secrets: Dockerfile
+          file: Dockerfile
 
       - uses: azure/webapps-deploy@v2
         with:
