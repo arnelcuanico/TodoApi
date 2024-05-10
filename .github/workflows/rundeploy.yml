@@ -1,0 +1,44 @@
+name: AppNetAPIDeployment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  AZURE_WEBAPP_NAME: app-net-api # set this to your application's name
+  ASPNETCORE_ENVIRONMENT: Development
+  CONTAINER_REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Github Action'
+        uses: actions/checkout@master
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Login to Azure Container Registry'
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          
+      - name: 'Docker Build and Push'
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          no-cache: true
+          tags: ${{ env.CONTAINER_REGISTRY }}/${{ env.AZURE_WEBAPP_NAME }}:development
+          secrets: |
+            GIT_PERSONAL_ACCESS_TOKEN=${{ secrets.GIT_PERSONAL_ACCESS_TOKEN }}
+
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          images: ${{ env.CONTAINER_REGISTRY }}/${{ env.AZURE_WEBAPP_NAME }}:development
