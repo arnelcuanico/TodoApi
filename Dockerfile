@@ -50,6 +50,9 @@ COPY --from=build /app .
 
 #ENV ASPNETCORE_ENVIRONMENT=Development
 
+EXPOSE 80
+EXPOSE 443
+EXPOSE 8080
 # Switch to a non-privileged user (defined in the base image) that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
 # and https://github.com/dotnet/dotnet-docker/discussions/4764
