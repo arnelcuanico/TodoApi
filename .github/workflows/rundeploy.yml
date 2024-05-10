@@ -34,10 +34,10 @@ jobs:
         with:
           push: true
           no-cache: true
-          tags: ${{ env.CONTAINER_REGISTRY }}/${{ env.AZURE_WEBAPP_NAME }}:development
+          tags: ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_WEBAPP_NAME }}:development
           file: Dockerfile
 
       - uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          images: ${{ env.CONTAINER_REGISTRY }}/${{ env.AZURE_WEBAPP_NAME }}:development
+          images: ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_WEBAPP_NAME }}:development
